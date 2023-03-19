@@ -1,7 +1,41 @@
 import styled from 'styled-components'
 import { Outlet, Link } from 'react-router-dom'
+import UserDetail from './auth/UserDetail'
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
 
+const LoggedOut = () => {
+  const [authUser, setAuthUser] = useState(null);
 
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    return () => {
+      listen();
+    };
+  }, []);
+
+  return(
+    <>
+    {
+      authUser==null ? 
+      <NavLinks>
+    <NavLink to="/login">Login</NavLink>
+    <NavLink to="/regis">Register</NavLink>
+      </NavLinks>:
+      <UserDetail/>
+    }
+    </>
+  )
+  
+}
 
 const Navbar = () => {
   return (
@@ -14,10 +48,7 @@ const Navbar = () => {
           <NavLink>Offers</NavLink>
           <NavLink>About Us</NavLink>
         </NavLinks>
-        <NavLinks>
-          <NavLink to="/login">Login</NavLink>
-          <NavLink to="/regis">Register</NavLink>
-        </NavLinks>
+        <LoggedOut />
       </Nav>
       <div>
         <Outlet/>

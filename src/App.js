@@ -1,9 +1,7 @@
 import { Route, createBrowserRouter , createRoutesFromElements, RouterProvider } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
-import UserDetail from "./components/auth/UserDetail";
 import Service from './components/Service';
 import Home from './components/pages/Home';
 import Navbar from './components/Navbar';
@@ -18,8 +16,6 @@ function Lost() {
 }
 
 function App() {
-  const [user, setUser] = useState({});
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path ="/" element={<Root/>}>
